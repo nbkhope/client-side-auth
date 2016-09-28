@@ -8,6 +8,17 @@ class Signin extends Component {
     this.props.signinUser({ email, password });
   }
 
+  renderAlert() {
+    // if there is an error message, then display it
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Error!</strong> {this.props.errorMessage}
+        </div>
+      );
+    }
+  }
+
   render() {
     const { handleSubmit, fields: { email, password } } = this.props;
 
@@ -15,21 +26,26 @@ class Signin extends Component {
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         <fieldset className="form-group">
           <label>Email:</label>
-          <input {...email} className="form-control" />
+          <input {...email} type="email" className="form-control" />
         </fieldset>
         <fieldset className="form-group">
           <label>Password:</label>
-          <input {...password} className="form-control" />
+          <input {...password} type="password" className="form-control" />
         </fieldset>
+        {this.renderAlert()}
         <button type="submit" className="btn btn-primary">Sign In</button>
       </form>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.error };
+}
+
 export default reduxForm({
   form: 'SigninForm',
   fields: ['email', 'password']
-}, null, actions)(Signin);
+}, mapStateToProps, actions)(Signin);
 // 2nd arg: mapStateToProps, 3rd arg: mapDispatchToProps
 // note: will change in redux-form v6
