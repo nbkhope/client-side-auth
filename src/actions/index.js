@@ -32,6 +32,27 @@ export function signinUser({ email, password }) {
   };
 }
 
+export function signupUser({ email, password }) {
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/signup`, { email, password })
+      .then((response) => {
+        console.log(response);
+
+        dispatch({ type: AUTH_USER });
+
+        localStorage.setItem('token', response.data.token);
+
+        browserHistory.push('/feature');
+      })
+      .catch((error) => {
+        // Axios API v0.13 changed,
+        // so you have to use error.response instead of just response
+        dispatch(authError(error.response.data.error));
+      })
+      ;
+  };
+}
+
 // use separate action creator for error
 export function authError(error) {
   return {
@@ -42,7 +63,7 @@ export function authError(error) {
 
 export function signoutUser() {
   localStorage.removeItem('token');
-  
+
   return {
     type: UNAUTH_USER
   };
