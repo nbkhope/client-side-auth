@@ -7,6 +7,10 @@ export default function(state = {}, action) {
       break;
     case UNAUTH_USER:
       return { ...state, authenticated: false };
+      break;
+    case AUTH_ERROR:
+      return { ...state, error: action.payload };
+      break;
     default:
       return state;
   }
