@@ -8,6 +8,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
 
 import App from './components/app';
+import requireAuth from './components/auth/require_auth';
 import reducers from './reducers';
 
 import Signin from './components/auth/signin';
@@ -24,7 +25,7 @@ ReactDOM.render(
         <Route path="/signin" component={Signin} />
         <Route path="/signout" component={Signout} />
         <Route path="/signup" component={Signup} />
-        <Route path="/feature" component={Feature} />
+        <Route path="/feature" component={requireAuth(Feature)} />
       </Route>
     </Router>
   </Provider>
